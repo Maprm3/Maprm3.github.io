@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>For you</title>
+<style>
+  :root { --ink:#22201e; --accent:#b4553a; --soft:#6f6862; --paper:#faf6f1; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  main { max-width:34rem; margin:0 auto; padding:3rem 1.4rem 4rem; }
+  h1 { font-size:1.9rem; margin:0 0 .3rem; letter-spacing:-0.01em; }
+  .sub { color:var(--soft); font-size:.95rem; margin:0 0 2.4rem; }
+  ol { list-style:none; margin:0; padding:0; counter-reset:track; }
+  li {
+    counter-increment:track; padding:1.1rem 0 1.1rem 2.4rem;
+    border-bottom:1px solid #e6ded4; position:relative;
+  }
+  li:last-child { border-bottom:none; }
+  li::before {
+    content:counter(track,decimal-leading-zero);
+    position:absolute; left:0; top:1.25rem;
+    font-size:.8rem; color:var(--soft); font-variant-numeric:tabular-nums;
+  }
+  a { color:var(--accent); text-decoration:none; font-weight:600; font-size:1.05rem; }
+  a:active { opacity:.6; }
+  .artist { color:var(--soft); font-weight:400; font-size:.95rem; }
+  .note { margin:.35rem 0 0; color:var(--soft); font-size:.92rem; }
+  footer { margin-top:3rem; color:var(--soft); font-size:.85rem; text-align:center; }
+</style>
+</head>
+<body>
+<main>
+
+  <h1>Side A</h1>
+  <p class="sub">Play it in order.</p>
+
+  <ol>
+
+    <li>
+      <a href="PASTE_APPLE_MUSIC_LINK_HERE">Song title</a>
+      <span class="artist">Artist</span>
+      <p class="note">Why this one is on here.</p>
+    </li>
+
+    <li>
+      <a href="PASTE_APPLE_MUSIC_LINK_HERE">Song title</a>
+      <span class="artist">Artist</span>
+      <p class="note">Why this one is on here.</p>
+    </li>
+
+    <li>
+      <a href="PASTE_APPLE_MUSIC_LINK_HERE">Song title</a>
+      <span class="artist">Artist</span>
+      <p class="note">Why this one is on here.</p>
+    </li>
+
+  </ol>
+
+  <footer>Made by hand, September 2026</footer>
+
+</main>
+</body>
+</html>
