@@ -2,43 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#120a1c">
 <title>For you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&family=Kanit:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#22201e; --accent:#b4553a; --soft:#6f6862; --paper:#faf6f1; }
-  * { box-sizing:border-box; }
-  body {
-    margin:0; background:var(--paper); color:var(--ink);
-    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    line-height:1.55; -webkit-font-smoothing:antialiased;
+  /* colours lifted straight from the back of the album */
+  :root{
+    --plum:#0e0718; --ink:#f7f1ff; --lilac:#c6a8e4; --num:#ba96e0;
+    --note:rgba(238,228,252,.86); --rule:rgba(200,168,232,.22);
   }
-  main { max-width:34rem; margin:0 auto; padding:3rem 1.4rem 4rem; }
-  h1 { font-size:1.9rem; margin:0 0 .3rem; letter-spacing:-0.01em; }
-  .sub { color:var(--soft); font-size:.95rem; margin:0 0 2.4rem; }
-  ol { list-style:none; margin:0; padding:0; counter-reset:track; }
-  li {
-    counter-increment:track; padding:1.1rem 0 1.1rem 2.4rem;
-    border-bottom:1px solid #e6ded4; position:relative;
+  *{box-sizing:border-box}
+  html{background:var(--plum)}
+  body{
+    margin:0; min-height:100vh; color:var(--ink); background:var(--plum);
+    font-family:"Exo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%;
   }
-  li:last-child { border-bottom:none; }
-  li::before {
-    content:counter(track,decimal-leading-zero);
-    position:absolute; left:0; top:1.25rem;
-    font-size:.8rem; color:var(--soft); font-variant-numeric:tabular-nums;
-  }
-  a { color:var(--accent); text-decoration:none; font-weight:600; font-size:1.05rem; }
-  a:active { opacity:.6; }
-  .artist { color:var(--soft); font-weight:400; font-size:.95rem; }
-  .note { margin:.35rem 0 0; color:var(--soft); font-size:.92rem; }
-  footer { margin-top:3rem; color:var(--soft); font-size:.85rem; text-align:center; }
+
+  /* ---------- the fog: back-cover texture, slowly drifting ---------- */
+  .bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+      background:radial-gradient(120% 90% at 30% 18%, #6d4191 0%, #2e1b45 46%, #0e0718 100%)}
+  .fog{position:absolute; inset:-12%; will-change:transform;
+       animation:breathe 70s ease-in-out infinite alternate;
+       background:
+         radial-gradient(40% 14% at 26% 12%, rgba(214,184,236,.80), rgba(214,184,236,0) 72%),
+         radial-gradient(30% 12% at 70% 8%, rgba(178,138,208,.72), rgba(178,138,208,0) 72%),
+         radial-gradient(46% 16% at 80% 30%, rgba(146,104,176,.72), rgba(146,104,176,0) 74%),
+         radial-gradient(40% 13% at 22% 38%, rgba(190,152,218,.62), rgba(190,152,218,0) 72%),
+         radial-gradient(36% 16% at 64% 52%, rgba(206,172,230,.50), rgba(206,172,230,0) 70%),
+         radial-gradient(50% 15% at 30% 66%, rgba(150,108,180,.62), rgba(150,108,180,0) 74%),
+         radial-gradient(42% 14% at 74% 78%, rgba(182,142,212,.55), rgba(182,142,212,0) 72%),
+         radial-gradient(38% 13% at 36% 90%, rgba(150,108,180,.52), rgba(150,108,180,0) 72%),
+         radial-gradient(28% 10% at 48% 24%, rgba(236,214,248,.42), rgba(236,214,248,0) 70%),
+         radial-gradient(60% 22% at 52% 46%, rgba(30,16,48,.45), rgba(30,16,48,0) 76%),
+         linear-gradient(180deg, #4a2e6e 0%, #2c1946 45%, #170c27 100%)}
+  .blob{position:absolute; border-radius:50%; will-change:transform}
+  .b1{width:85vmax; height:85vmax; top:-38vmax; left:-30vmax;
+      background:radial-gradient(circle, rgba(160,44,138,.50) 0%, rgba(160,44,138,0) 62%);
+      animation:drift1 43s ease-in-out infinite alternate}
+  .b2{width:90vmax; height:90vmax; bottom:-42vmax; right:-34vmax;
+      background:radial-gradient(circle, rgba(112,70,204,.48) 0%, rgba(112,70,204,0) 62%);
+      animation:drift2 55s ease-in-out infinite alternate}
+  .b3{width:62vmax; height:62vmax; top:22%; left:18%;
+      background:radial-gradient(circle, rgba(228,204,248,.20) 0%, rgba(228,204,248,0) 60%);
+      animation:drift3 63s ease-in-out infinite alternate}
+  .grain{position:absolute; inset:0; opacity:.16; mix-blend-mode:overlay;
+         background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+  .vignette{position:absolute; inset:0;
+            background:radial-gradient(ellipse at 50% 45%, rgba(14,7,24,0) 38%, rgba(14,7,24,.62) 100%)}
+  @keyframes breathe{from{transform:scale(1) translate3d(0,0,0)} to{transform:scale(1.14) translate3d(-3%,2%,0)}}
+  @keyframes drift1{to{transform:translate3d(30vmax,24vmax,0)}}
+  @keyframes drift2{to{transform:translate3d(-28vmax,-32vmax,0)}}
+  @keyframes drift3{to{transform:translate3d(-20vmax,16vmax,0) scale(1.25)}}
+  @media (prefers-reduced-motion:reduce){.fog,.blob{animation:none}}
+
+  /* ---------- page ---------- */
+  main{position:relative; z-index:1; isolation:isolate; max-width:36rem; margin:0 auto;
+       padding:calc(3rem + env(safe-area-inset-top, 0px)) 1.4rem calc(4rem + env(safe-area-inset-bottom, 0px))}
+  main::before{content:""; position:absolute; inset:1.4rem .4rem; z-index:-1; border-radius:40px;
+       background:rgba(14,6,28,.42); box-shadow:0 0 90px 50px rgba(14,6,28,.42)}
+
+  /* chrome title, same treatment as the album wordmark */
+  .top{text-align:center; margin:0 0 2rem}
+  .chrome{position:relative; isolation:isolate; display:inline-block; margin:0 0 .7rem; padding:0 .16em;
+     font-family:"Kanit", "Exo 2", sans-serif; font-style:italic; font-weight:900;
+     font-size:clamp(3.1rem, 15vw, 4.6rem); line-height:1.12; letter-spacing:.01em;
+     filter:drop-shadow(0 0 20px rgba(200,100,255,.55)) drop-shadow(0 8px 16px rgba(8,2,22,.7))}
+  .chrome span{position:relative; z-index:2; color:transparent; -webkit-text-fill-color:transparent;
+     background:linear-gradient(180deg,#fff 0%,#ecdeff 14%,#b2c2ff 30%,#543aa0 44%,#18083a 50%,#fff 56%,#ffd6f6 68%,#ff60c8 82%,#c098fa 93%,#fff 100%);
+     -webkit-background-clip:text; background-clip:text}
+  .chrome::before,.chrome::after{content:attr(data-text); position:absolute; inset:0; padding:inherit}
+  .chrome::before{z-index:0; color:#0a031c; -webkit-text-stroke:.28em #0a031c}
+  .chrome::after{z-index:1; color:#f8f3ff; -webkit-text-stroke:.14em #f8f3ff}
+
+  .sub{margin:0; font-weight:500; font-size:.8rem; letter-spacing:.34em; text-transform:uppercase;
+       color:#f5eaff; text-shadow:0 2px 8px rgba(8,2,22,.85)}
+  .rule{display:flex; align-items:center; gap:.7rem; max-width:30rem; margin:1.1rem auto 0}
+  .rule b{flex:1; height:1px; background:linear-gradient(90deg, rgba(216,188,244,0), rgba(216,188,244,.6), rgba(216,188,244,0))}
+  .spark{flex:none; width:13px; height:13px; background:linear-gradient(180deg,#fff,#c4a0ec 50%,#fff);
+         clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+  .spark.big{width:22px; height:22px}
+
+  /* tracklist, laid out like the back cover */
+  ol{list-style:none; margin:0; padding:0; counter-reset:track}
+  li{counter-increment:track; position:relative; padding:1.15rem 0 1.2rem 2.9rem; border-bottom:1px solid var(--rule)}
+  li:last-child{border-bottom:none}
+  li::before{content:counter(track, decimal-leading-zero); position:absolute; left:0; top:1.42rem;
+     font-weight:600; font-size:.85rem; letter-spacing:.04em; color:var(--num); font-variant-numeric:tabular-nums}
+  a{color:var(--ink); text-decoration:none; font-weight:700; font-size:1.2rem;
+    text-shadow:0 2px 8px rgba(8,2,22,.75); -webkit-tap-highlight-color:transparent}
+  a::after{content:""; display:inline-block; width:.5em; height:.56em; margin-left:.5em; vertical-align:.04em;
+    background:linear-gradient(180deg,#ffd6f6,#ff60c8); clip-path:polygon(0 0,100% 50%,0 100%)}
+  a:hover,a:focus-visible{color:#fff; text-shadow:0 0 14px rgba(255,120,220,.55), 0 2px 8px rgba(8,2,22,.75)}
+  a:focus-visible{outline:2px solid #ff9fe0; outline-offset:4px; border-radius:4px}
+  a:active{opacity:.7}
+  .artist{display:block; margin-top:.05rem; color:var(--lilac); font-weight:400; font-size:1rem}
+  .note{margin:.6rem 0 0; color:var(--note); font-size:.98rem; line-height:1.62; text-shadow:0 1px 6px rgba(8,2,22,.6)}
+
+  footer{margin-top:3rem; text-align:center; color:#d6bcf0; font-weight:500; font-size:.82rem;
+         letter-spacing:.34em; text-transform:uppercase; text-shadow:0 2px 8px rgba(8,2,22,.85)}
+  footer::before,footer::after{content:""; display:inline-block; width:11px; height:11px; margin:0 .9em;
+         vertical-align:.08em; background:linear-gradient(180deg,#fff,#c4a0ec 50%,#fff);
+         clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+  @media (min-width:700px){ a{font-size:1.28rem} }
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"><div class="fog"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grain"></div><div class="vignette"></div></div>
 <main>
 
-  <h1>Side A</h1>
-  <p class="sub">Play it in order.</p>
+  <header class="top">
+    <h1 class="chrome" data-text="Side A"><span>Side A</span></h1>
+    <p class="sub">Play it in order.</p>
+    <div class="rule" aria-hidden="true"><i class="spark"></i><b></b><i class="spark big"></i><b></b><i class="spark"></i></div>
+  </header>
 
   <ol>
 
